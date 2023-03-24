@@ -1,3 +1,4 @@
+const awsUtils = require("./libs/aws-utils");
 const serverless = require("serverless-http");
 const express = require("express");
 const app = express();
@@ -8,9 +9,10 @@ app.get("/", (req, res, next) => {
   });
 });
 
-app.get("/hello", (req, res, next) => {
+app.get("/files", async(req, res, next) => {
+  const files = await awsUtils.listObjects('yk-bucket-2023', 'january/');
   return res.status(200).json({
-    message: "Hello from path!",
+    message: files.Contents
   });
 });
 
